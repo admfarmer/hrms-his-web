@@ -1,0 +1,24 @@
+<div class="login-wrapper">
+    <form class="login">
+        <label class="title">
+            <h3 class="welcome">Welcome to</h3>
+            ระบบบริหารจัดการความเสี่ยง
+        </label>
+        <div class="login-group">
+            <label>
+                <h4 class="welcome">เลือกเข้าเพื่อเข้าระบบ</h4>
+            </label>
+            <div class="auth-source select">
+                <select [(ngModel)]="adm_status" name="adm_status" id="login-auth-source-1"
+                    placeholder="เลือกเข้าเพื่อเข้าระบบ">
+                    <option value="0">รายงานอุบัติการณ์</option>
+                    <option value="1">ตั้งค่าอุบัติการณ์</option>
+                </select>
+            </div>
+            <input class="username" type="text" [(ngModel)]="username" name="username" placeholder="Username">
+            <input class="password" type="password" [(ngModel)]="password" name="password" placeholder="Password">
+            <button type="submit" class="btn btn-primary" (click)="doLogin()"
+                [disabled]="!username || !password">Login</button>
+        </div>
+    </form>
+</div>

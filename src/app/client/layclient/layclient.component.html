@@ -1,0 +1,101 @@
+<clr-main-container>
+    <clr-header class="header header-6">
+        <div class="branding">
+            <a href="#" routerLink='/client/home' class="nav-link">
+                <span class="title">TSM | ระบบบริหารจัดการอุบัติการณความเสี่ยง</span>
+            </a>
+        </div>
+        <div class="header-actions">
+            <div class="branding">
+                <span class="title">{{username}}({{title}}{{first_name}} {{last_name}}) | <a class="nav-link" href="#"
+                        (click)="Logout()">LogOut</a></span>
+            </div>
+        </div>
+
+    </clr-header>
+
+    <div class="content-container">
+        <nav class="sidenav" [clr-nav-level]="2">
+            <section class="sidenav-content">
+                <section class="nav-group collapsible">
+                    <input id="tabexample2" type="checkbox">
+                    <label for="tabexample2">รายงานอุบัติการณ์ หน่วยงาน </label>
+                    <ul class="nav-list" *ngFor="let d of getSubItemDpart">
+                        <li>
+                            <a class="nav-link" href="#" [routerLink]="['./report',d.query_id]" routerLinkActive="active">
+                                <clr-icon shape="note"></clr-icon> {{d.query_name}}
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                <section class="nav-group collapsible" *ngIf="maniger_user === 'A'">
+                    <input id="menurist2" type="checkbox">
+                    <label for="menurist2">รายงานอุบัติการณ์ ทั่วไป</label>
+                    <ul class="nav-list" *ngFor="let i of getSubItem">
+                        <li>
+                            <a class="nav-link" href="#" [routerLink]="['./view',i.query_id]" routerLinkActive="active">
+                                <clr-icon shape="note"></clr-icon> {{i.query_name}}
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                <section class="nav-group collapsible" *ngIf="maniger_user === 'A'">
+                    <input id="menurist2" type="checkbox">
+                    <label for="menurist2">รายงานอุบัติการณ์ Manager</label>
+                    <ul class="nav-list" *ngFor="let iMG of getSubItemMG">
+                        <li>
+                            <a class="nav-link" href="#" [routerLink]="['./view',iMG.query_id]" routerLinkActive="active">
+                                <clr-icon shape="file"></clr-icon> {{iMG.query_name}}
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+            </section>
+        </nav>
+
+        <div class="content-area">
+            <nav class="subnav" [clr-nav-level]="1">
+                <ul class="nav">
+                    <clr-dropdown>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" routerLink='/client/home' routerLinkActive="active">
+                                <clr-icon shape="users"></clr-icon> วิเคราะห์อุบัติการณ์
+                            </a>
+                        </li>
+                    </clr-dropdown>
+                    <clr-dropdown>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" routerLink='/client/incident' routerLinkActive="active">
+                                <clr-icon shape="users"></clr-icon> เขียนอุบัติการณ์
+                            </a>
+                        </li>
+                    </clr-dropdown>
+                    <clr-dropdown>
+                        <li class="nav-item" *ngIf="maniger_user === 'A'">
+                            <a class="nav-link" href="#" routerLink='/client/manager' routerLinkActive="active">
+                                <clr-icon shape="organization"></clr-icon> จัดการอุบัติการณ์
+                            </a>
+                        </li>
+                    </clr-dropdown>
+                    <clr-dropdown>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" routerLink='/client/setup' routerLinkActive="active">
+                                <clr-icon shape="cog"></clr-icon> แก้ไขข้อมูล
+                            </a>
+                        </li>
+                    </clr-dropdown>
+                    <clr-dropdown *ngIf="quality != null">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" routerLink='/client/quality' routerLinkActive="active">
+                                <clr-icon shape="bars"></clr-icon> จัดการอุบัติการณ์ทีมคุณภาพ
+                            </a>
+                        </li>
+                    </clr-dropdown>
+                </ul>
+            </nav>
+            <div class="content-area">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</clr-main-container>

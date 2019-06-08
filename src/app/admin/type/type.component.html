@@ -1,0 +1,68 @@
+<button class="btn btn-primary" (click)="Open()">เพิ่มข้อมูล</button>
+<clr-datagrid>
+    <!-- <clr-dg-column [clrDgField]="'id_safety'">id_safety</clr-dg-column> -->
+    <clr-dg-column [clrDgField]="'code_type'">code_type</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name_side'">name_type</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name_TH'">name_TH</clr-dg-column>
+    <clr-dg-row *clrDgItems="let x of allType">
+        <clr-dg-action-overflow>
+            <button class="btn btn-primary" (click)="editData(x)">แก้ไขข้อมูล</button>
+            <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button>
+        </clr-dg-action-overflow>
+        <!-- <clr-dg-cell>{{x.id_safety}}</clr-dg-cell> -->
+        <clr-dg-cell>{{x.code_type}}</clr-dg-cell>
+        <clr-dg-cell>{{x.name_type}}</clr-dg-cell>
+        <clr-dg-cell>{{x.name_TH}}</clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">Type</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูล Type</span>
+                </label>
+                <div class="form-group">
+                    <label for="id_safety">id_safety</label>
+                    <!-- <input type="text" [(ngModel)]="id_safety" name="id_safety" id="id_safety" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="id_safety" name="id_safety" id="id_safety">
+                            <option *ngFor="let s of allSafety" [value]="s.id_safety">{{s.name_safety}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_type">code_type</label>
+                    <input type="text" [(ngModel)]="code_type" name="code_type" id="code_type" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="name_type">name_type</label>
+                    <textarea [(ngModel)]="name_type" name="name_type" id="name_type" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="name_TH">name_TH</label>
+                    <textarea [(ngModel)]="name_TH" name="name_TH" id="name_TH" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="depart">id_depart</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_depart" name="id_depart" id="id_depart">
+                            <option *ngFor="let d of alldeparts" [value]="d.id_depart">{{d.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>

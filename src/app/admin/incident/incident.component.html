@@ -1,0 +1,105 @@
+<button class="btn btn-primary" (click)="Open()">เพิ่มข้อมูล</button>
+<clr-datagrid>
+    <clr-dg-column [clrDgField]="'code_account'">code_account</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name_account'">name_account</clr-dg-column>
+    <clr-dg-column [clrDgField]="'simple'">simple</clr-dg-column>
+    <clr-dg-column [clrDgField]="'simple'">status</clr-dg-column>
+    <clr-dg-row *clrDgItems="let x of allAccount">
+        <clr-dg-action-overflow>
+            <button class="btn btn-primary" (click)="editData(x)">แก้ไขข้อมูล</button>
+            <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{x.code_account}}</clr-dg-cell>
+        <clr-dg-cell>{{x.name_account}}</clr-dg-cell>
+        <clr-dg-cell>{{x.simple}}</clr-dg-cell>
+        <clr-dg-cell>
+            <ng-container *ngIf="x.status_acc == 0; else elseTemplate">
+                เปิดใช้งาน
+            </ng-container>
+            <ng-template #elseTemplate>
+                ปิดใช้งาน
+            </ng-template>
+        </clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">Account</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูล Account</span>
+                </label>
+                <div class="form-group">
+                    <label for="id_side">id_side</label>
+                    <!-- <input type="text" [(ngModel)]="id_side" name="id_side" id="id_side" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="id_side" name="id_side" id="id_side" (click)="showAllSafety(id_side)">
+                            <option *ngFor="let s of allSide" [value]="s.id_side">{{s.code_side}} : {{s.name_side}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_safety">id_safety</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_safety" name="id_safety" id="id_safety" (click)="showAllType(id_safety)">
+                            <option *ngFor="let s of allSafety" [value]="s.id_safety">{{s.code_safety}} : {{s.name_safety}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_type">id_type</label>
+                    <!-- <input type="text" [(ngModel)]="id_type" name="id_type" id="id_type" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="id_type" name="id_type" id="id_type" (click)="showAllNotype(id_type)">
+                            <option *ngFor="let t of allType" [value]="t.id_type">{{t.code_type}} : {{t.name_type}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_notype">id_notype</label>
+                    <!-- <input type="text" [(ngModel)]="id_notype" name="id_notype" id="id_notype" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="id_notype" name="id_notype" id="id_notype">
+                            <option *ngFor="let n of allNotype" [value]="n.id_notype">{{n.code_notype}} : {{n.name_notype}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_account">code_account</label>
+                    <input type="text" [(ngModel)]="code_account" name="code_account" id="code_account" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="name_account">name_account</label>
+                    <!-- <input type="text" [(ngModel)]="name_account" name="name_account" id="name_account" size="20"> -->
+                    <textarea [(ngModel)]="name_account" name="name_account" id="name_account" rows="7"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="simple">simple</label>
+                    <input type="text" [(ngModel)]="simple" name="simple" id="simple" size="20">
+                </div>
+                <div class="form-group">
+                    <label for="id_notype">สถานะ</label>
+                    <!-- <input type="text" [(ngModel)]="id_notype" name="id_notype" id="id_notype" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="status_acc" name="status_acc" id="status_acc">
+                            <option [value]="0">เปิดใช้งาน</option>
+                            <option [value]="1">ปิดใช้งาน</option>
+                        </select>
+                    </div>
+                </div>
+
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>

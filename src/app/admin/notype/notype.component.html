@@ -1,0 +1,59 @@
+<button class="btn btn-primary" (click)="Open()">เพิ่มข้อมูล</button>
+<clr-datagrid>
+    <!-- <clr-dg-column [clrDgField]="'id_type'">id_type</clr-dg-column> -->
+    <clr-dg-column [clrDgField]="'code_notype'">code_notype</clr-dg-column>
+    <clr-dg-column [clrDgField]="'group_level'">group_level</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name_TH'">name_TH</clr-dg-column>
+    <clr-dg-row *clrDgItems="let x of allNotype">
+        <clr-dg-action-overflow>
+            <button class="btn btn-primary" (click)="editData(x)">แก้ไขข้อมูล</button>
+            <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button>
+        </clr-dg-action-overflow>
+        <!-- <clr-dg-cell>{{x.id_type}}</clr-dg-cell> -->
+        <clr-dg-cell>{{x.code_notype}}</clr-dg-cell>
+        <clr-dg-cell>{{x.name_notype}}</clr-dg-cell>
+        <clr-dg-cell>{{x.name_TH}}</clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">Notype</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูล Notype</span>
+                </label>
+                <div class="form-group">
+                    <label for="id_type">id_type</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_type" name="id_type" id="id_type">
+                            <option *ngFor="let s of allType" [value]="s.id_type">{{s.name_type}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_notype">code_notype</label>
+                    <input type="text" [(ngModel)]="code_notype" name="code_notype" id="code_notype" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="name_notype">name_notype</label>
+                    <textarea [(ngModel)]="name_notype" name="name_notype" id="name_notype" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="name_TH">name_TH</label>
+                    <textarea [(ngModel)]="name_TH" name="name_TH" id="name_TH" rows="5"></textarea>
+                </div>
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>

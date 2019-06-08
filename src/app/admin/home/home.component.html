@@ -1,0 +1,175 @@
+<button class="btn btn-primary" (click)="Open()">เพิ่มข้อมูล</button>
+<clr-datagrid>
+    <clr-dg-column [clrDgField]="'idcard'">idcard</clr-dg-column>
+    <clr-dg-column [clrDgField]="'username'">username</clr-dg-column>
+    <clr-dg-column [clrDgField]="'password'">password</clr-dg-column>
+    <clr-dg-column [clrDgField]="'admin_status'">admin_status</clr-dg-column>
+    <clr-dg-row *clrDgItems="let x of allUsername">
+        <clr-dg-action-overflow>
+            <button class="btn btn-primary" (click)="editData(x)">แก้ไขข้อมูล</button>
+            <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{x.title}}{{x.first_name}} {{x.last_name}}</clr-dg-cell>
+        <clr-dg-cell>{{x.username}}</clr-dg-cell>
+        <clr-dg-cell>{{x.password}}</clr-dg-cell>
+        <clr-dg-cell>{{x.admin_status}}</clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} คน
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="open">
+    <h3 class="modal-title">Account</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูล Account</span>
+                </label>
+                <div class="form-group">
+                    <label for="idcard">idcard</label>
+                    <!-- <input type="text" [(ngModel)]="idcard" name="idcard" id="idcard" size="13"> -->
+                    <div class="select">
+                        <select [(ngModel)]="idcard" name="idcard" id="idcard">
+                            <option *ngFor="let p of allpersons" [value]="p.idcard">{{p.title}}{{p.first_name}} {{p.last_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="username">username</label>
+                    <input type="text" [(ngModel)]="username" name="username" id="username" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="password">password</label>
+                    <input type="text" [(ngModel)]="password" name="password" id="password" size="20" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="is_accept">is_accept</label>
+                    <input type="text" [(ngModel)]="is_accept" name="is_accept" id="is_accept" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="depart">Depart</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_depart" name="id_depart" id="id_depart">
+                            <option *ngFor="let d of alldeparts" [value]="d.code_depart">{{d.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="admin_status">admin_status</label>
+                    <!-- <input type="text" [(ngModel)]="" name="admin_status" id="admin_status" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="admin_status" name="admin_status" id="admin_status">
+                            <option [value]="' '">บุคลากรทั่วไป</option>
+                            <option [value]="'1'">ผู้ดูแลระบบบริหารจัดการความเสี่ยง</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="chief_user">chief_user</label>
+                    <!-- <input type="text" [(ngModel)]="chief_user" name="chief_user" id="chief_user" size="20"> -->
+                    <div class="select">
+                        <select [(ngModel)]="chief_user" name="chief_user" id="chief_user">
+                            <option [value]="' '">บุคลากรทั่วไป</option>
+                            <option [value]="'A'">หัวหน้าฝ่าย / หัวหน้ากลุ่มงาน</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="maniger_user">maniger_user</label>
+                    <!-- <input type="text" [(ngModel)]="maniger_user" name="maniger_user" id="maniger_user" size="20"> -->
+                    <div class="select">
+                        <select [(ngModel)]="maniger_user" name="maniger_user" id="maniger_user">
+                            <option [value]="' '">บุคลากรทั่วไป</option>
+                            <option [value]="'A'">ผู้บริหารจัดการคว่มเสี่ยง</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="edit">
+    <h3 class="modal-title">Account</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูล Account</span>
+                </label>
+                <div class="form-group">
+                    <label for="idcard">idcard</label>
+                    <input type="text" [(ngModel)]="idcard" name="idcard" id="idcard" size="13">
+                    <!-- <div class="select">
+                        <select [(ngModel)]="idcard" name="idcard" id="idcard">
+                                <option [value]="x.idcard">{{x.title}}{{x.first_name}}  {{x.last_name}}</option>
+                            </select>
+                    </div> -->
+                </div>
+                <div class="form-group">
+                    <label for="username">username</label>
+                    <input type="text" [(ngModel)]="username" name="username" id="username" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="password">password</label>
+                    <input type="text" [(ngModel)]="password" name="password" id="password" size="20" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="is_accept">is_accept</label>
+                    <input type="text" [(ngModel)]="is_accept" name="is_accept" id="is_accept" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="depart">Depart</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_depart" name="id_depart" id="id_depart">
+                            <option *ngFor="let d of alldeparts" [value]="d.id_depart">{{d.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="admin_status">admin_status</label>
+                    <!-- <input type="text" [(ngModel)]="" name="admin_status" id="admin_status" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="admin_status" name="admin_status" id="admin_status">
+                            <option [value]="' '">บุคลากรทั่วไป</option>
+                            <option [value]="'1'">ผู้ดูแลระบบบริหารจัดการความเสี่ยง</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="chief_user">chief_user</label>
+                    <!-- <input type="text" [(ngModel)]="chief_user" name="chief_user" id="chief_user" size="20"> -->
+                    <div class="select">
+                        <select [(ngModel)]="chief_user" name="chief_user" id="chief_user">
+                            <option [value]="' '">บุคลากรทั่วไป</option>
+                            <option [value]="'A'">หัวหน้าฝ่าย / หัวหน้ากลุ่มงาน</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="maniger_user">maniger_user</label>
+                    <!-- <input type="text" [(ngModel)]="maniger_user" name="maniger_user" id="maniger_user" size="20"> -->
+                    <div class="select">
+                        <select [(ngModel)]="maniger_user" name="maniger_user" id="maniger_user">
+                            <option [value]="' '">บุคลากรทั่วไป</option>
+                            <option [value]="'A'">ผู้บริหารจัดการคว่มเสี่ยง</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="edit = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>

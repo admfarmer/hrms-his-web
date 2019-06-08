@@ -1,0 +1,54 @@
+<button class="btn btn-primary" (click)="Open()">เพิ่มข้อมูล</button>
+<clr-datagrid>
+    <!-- <clr-dg-column [clrDgField]="'id_side'">id_side</clr-dg-column> -->
+    <clr-dg-column [clrDgField]="'code_safety'">code_safety</clr-dg-column>
+    <clr-dg-column [clrDgField]="'name_safety'">name_safety</clr-dg-column>
+    <clr-dg-row *clrDgItems="let x of allSafety">
+        <clr-dg-action-overflow>
+            <button class="btn btn-primary" (click)="editData(x)">แก้ไขข้อมูล</button>
+            <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button>
+        </clr-dg-action-overflow>
+        <!-- <clr-dg-cell>{{x.id_side}}</clr-dg-cell> -->
+        <clr-dg-cell>{{x.code_safety}}</clr-dg-cell>
+        <clr-dg-cell>{{x.name_safety}}</clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">Safety</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูล Safety</span>
+                </label>
+                <div class="form-group">
+                    <label for="id_side">id_side</label>
+                    <!-- <input type="text" [(ngModel)]="id_side" name="id_side" id="id_side" size="10"> -->
+                    <div class="select">
+                        <select [(ngModel)]="id_side" name="id_side" id="id_side">
+                            <option *ngFor="let s of allSide" [value]="s.id_side">{{s.name_side}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_safety">code_safety</label>
+                    <input type="text" [(ngModel)]="code_safety" name="code_safety" id="code_safety" size="10">
+                </div>
+                <div class="form-group">
+                    <label for="name_safety">name_safety</label>
+                    <input type="text" [(ngModel)]="name_safety" name="name_safety" id="name_safety" size="50">
+                </div>
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>

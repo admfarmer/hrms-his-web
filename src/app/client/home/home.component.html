@@ -1,0 +1,504 @@
+<div class="btn-group btn-primary">
+    <button class="btn" (click)="showAllIncident()">รายงานอุบัติการณ์รอการวิเคราห์</button>
+    <button class="btn btn-success" (click)="ShowIncident()">รายงานอุบัติการณ์ทั้งหมด</button>
+</div>
+<h2>ข้อมูลอุบัติการณ์ความเสี่ยงหน่วยงาน</h2>
+อุบัติการณ์ความเสี่ยง ส่งมาหน่วยงานรับผิดชอบ มีการวิเคราะห์แก้ไข หัวหน้างาน/หัวหน้าฝ่าย ส่งปิดอุบัติการณ ->>
+รายงานอุบัติการณ์ทั้งหมด
+
+<clr-datagrid class="col-xs-12 col-md-12 col-xl-12">
+    <clr-dg-placeholder>
+        <span class="spinner" *ngIf="datanull !== '0'"> Loading...</span>
+    </clr-dg-placeholder>
+    <clr-dg-column [clrDgField]="'code_account'">อุบัติการณ์</clr-dg-column>
+    <clr-dg-column [clrDgField]="'location_incident'">สถานที่เกิด</clr-dg-column>
+    <clr-dg-column [clrDgField]="'date_account'">วันที่พบอุบัติการณ์</clr-dg-column>
+    <clr-dg-column [clrDgField]="'time_incident'">เวลาที่พบอุบัติการณ์</clr-dg-column>
+    <clr-dg-column [clrDgField]="'agents_involved'">สรุปประเด็นปัญหา</clr-dg-column>
+    <clr-dg-column [clrDgField]="'code_level'">ระดับความรุนแรง</clr-dg-column>
+    <clr-dg-column> Status</clr-dg-column>
+    <clr-dg-row *clrDgItems="let x of allincident">
+        <clr-dg-action-overflow>
+            <div class="btn-group btn-primary">
+                <button class="btn btn-primary" (click)="editData(x)">วิเคราะห์อุบัติการณ์</button>
+                <button class="btn btn-success" (click)="editChief(x)"
+                    *ngIf="chief_user === 'A'">ส่งปิดอุบัติการณ์</button>
+                <!-- <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button> -->
+            </div>
+        </clr-dg-action-overflow>
+        <clr-dg-cell>{{x.code_account}}
+            <clr-signpost (click)="showSelectacc(x.code_account)">
+                <clr-signpost-content [clrPosition]="code_account" *clrIfOpen>
+                    <h3 style="margin-top: 0">{{x.code_account}}</h3>
+                    <h4>
+                        <code class="clr-code">{{select_acc_name}}</code>
+                    </h4>
+                </clr-signpost-content>
+            </clr-signpost>
+
+        </clr-dg-cell>
+        <clr-dg-cell>{{x.location_name}}</clr-dg-cell>
+        <clr-dg-cell>{{x.date_account | date:'yyyy-MM-dd'}}</clr-dg-cell>
+        <clr-dg-cell>
+            {{x.time_name}}
+            <!-- <span *ngIf="x.time_incident === '1'">เวรเช้า : (08.00 - 16.00)</span>
+            <span *ngIf="x.time_incident === '2'">เวรบ่าย : (16.00 - 24.00)</span>
+            <span *ngIf="x.time_incident === '3'">เวรดึก : (00.00 - 08.00)</span> -->
+        </clr-dg-cell>
+        <clr-dg-cell>{{x.agents_involved}}</clr-dg-cell>
+        <clr-dg-cell>{{x.code_level}}</clr-dg-cell>
+        <clr-dg-cell>
+            <span *ngIf="x.conf_chief === '1'">
+                <clr-icon shape="neutral-face"></clr-icon>
+            </span>
+            <span *ngIf="x.conf_output === '1'">
+                <clr-icon shape="happy-face"></clr-icon>
+            </span>
+        </clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} อุบัติการณ์
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
+
+<!-- รายงานอุบัติการณ์ความเสี่ยง -->
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">อุบัติการณ์ความเสี่ยง</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูลอุบัติการณ์</span>
+                </label>
+                <div class="form-group">
+                    <label for="hn_incident">รหัสผู้มารับบริการ</label>
+                    <input type="text" [(ngModel)]="hn_incident" name="hn_incident" id="hn_incident" size="10" disabled>
+                </div>
+
+                <!-- <div class="form-group">
+                    <label for="idcard_incident">ผู้รายงานอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="idcard_incident" name="idcard_incident" id="idcard_incident" disabled>
+                            <option *ngFor="let p of allpersons" [value]="p.idcard">{{p.title}}{{p.first_name}}  {{p.last_name}}</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <div class="form-group">
+                    <label for="dep_rep_id" class="required">หน่วยงานผู้รายงาน</label>
+                    <div class="select">
+                        <select [(ngModel)]="dep_rep_id" name="dep_rep_id" id="dep_rep_id" disabled>
+                            <option *ngFor="let n of alldeparts" [value]="n.id_depart">{{n.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dep_res_id" class="required">ส่งถึงหน่วยงาน</label>
+                    <div class="select">
+                        <select [(ngModel)]="dep_res_id" name="dep_res_id" id="dep_res_id" disabled>
+                            <option *ngFor="let n of alldeparts" [value]="n.id_depart">{{n.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_side" class="required">กลุ่มอุบัติการ</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_side" name="id_side" id="id_side" (click)="showAllSafety(id_side)"
+                            (click)="showAllLevel(id_side)"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let s of allSide" [value]="s.id_side">{{s.code_side}}:{{s.name_side}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_safety" class="required">หมวดอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_safety" name="id_safety" id="id_safety" (click)="showAllType(id_safety)"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let s of allSafety" [value]="s.id_safety">
+                                {{s.code_safety}}:{{s.name_safety}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_type" class="required">ประเภทอุบัติการ</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_type" name="id_type" id="id_type" (click)="showAllNotype(id_type)"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let t of allType" [value]="t.id_type">{{t.code_type}}:{{t.name_type}} |
+                                {{t.name_TH}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_notype" class="required">ประเภทย่อยอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_notype" name="id_notype" id="id_notype"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let n of allNotype" [value]="n.id_notype">
+                                {{n.code_notype}}:{{n.name_notype}}
+                                | {{n.name_TH}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_account" class="required">บัญชีอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="code_account" name="code_account" id="code_account" disabled>
+                            <option *ngFor="let n of allAccount" [value]="n.code_account">
+                                {{n.code_account}}:{{n.name_account}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_level" class="required">ระดับความรุ่นแรง</label>
+                    <div class="select">
+                        <select [(ngModel)]="code_level" name="code_level" id="code_level" disabled>
+                            <option *ngFor="let n of alllevel" [value]="n.code_level">{{n.code_level}}:{{n.name_level}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="affected_id">บุคคลได้รับผลกระทบ</label>
+                    <div class="select">
+                        <select [(ngModel)]="affected_id" name="affected_id" id="affected_id" disabled>
+                            <option *ngFor="let s of allaffected" [value]="s.affected_id">{{s.affected_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sex_incident">เพศ บุคคลได้รับผลกระทบ</label>
+                    <div class="select">
+                        <select [(ngModel)]="sex_incident" name="sex_incident" id="sex_incident" disabled>
+                            <option *ngFor="let s of allsex" [value]="s.sex_id">{{s.sex_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="age_incident">อายุ บุคคลได้รับผลกระทบ</label>
+                    <input type="text" [(ngModel)]="age_incident" name="age_incident" id="age_incident" size="10"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="location_incident" class="required">สถานที่เกิดอุบัตการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="location_incident" name="location_incident" id="location_incident"
+                            disabled>
+                            <option *ngFor="let l of alllocation" [value]="l.location_id">{{l.location_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="date_incident" class="required">วันเดือนปีที่เกิดอุบัติการณ์</label>
+                    <input type="date" [(ngModel)]="date_incident" name="date_incident" id="date_incident" size="20"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="date_account" class="required">วันเดือนปีที่รายงาน</label>
+                    <input type="date" [(ngModel)]="date_account" name="date_account" id="date_account" size="20"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="time_incident" class="required">เวลาที่เกิดอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="time_incident" name="time_incident" id="time_incident" disabled>
+                            <option *ngFor="let t of alltime" [value]="t.time_id">{{t.time_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="agents_involved" class="required">สรุปประเด็นปัญหา
+                        <clr-signpost>
+                            <clr-signpost-content [clrPosition]="agents_involved" *clrIfOpen>
+                                <h3 style="margin-top: 0">สรุปประเด็นปัญหา</h3>
+                                <h4>
+                                    <code class="clr-code">ตาม Format : เกิดอะไร เพราะเหตุใด อย่างไร</code>
+                                </h4>
+                            </clr-signpost-content>
+                        </clr-signpost>
+                    </label>
+                    <textarea [(ngModel)]="agents_involved" name="agents_involved" id="agents_involved" rows="5"
+                        disabled></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="other_involved">วิธีการแก้ไขเบื้องต้น</label>
+                    <textarea [(ngModel)]="other_involved" name="other_involved" id="other_involved" rows="5"
+                        disabled></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="noteceo">วิเคราะห์แก้ไขอุบัติการณ์</label>
+                    <textarea [(ngModel)]="noteceo" name="noteceo" id="noteceo" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="date_res">วันที่วิเคราะห์แก้ไข</label>
+                    <input type="date" [(ngModel)]="date_res" name="date_res" id="date_res" size="20" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="resulting_actions">มีการปรับปรุ่ง/พัฒนา (ถ้ามี)</label>
+                    <textarea [(ngModel)]="resulting_actions" name="resulting_actions" id="resulting_actions"
+                        rows="5"></textarea>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="date_rep">วันที่ ปิดอุบติการณ์</label>
+                    <input type="date" [(ngModel)]="date_rep" name="date_rep" id="date_rep" size="20" disabled>
+                </div> -->
+
+                <!-- <div class="form-group" *ngIf="chief_user === 'A'">
+                    <label for="conf_chief">conf_chief</label>
+                    <div class="select">
+                        <select [(ngModel)]="conf_chief" name="conf_chief" id="conf_chief" disabled>
+                            <option [value]="'0'">รอการอนุมัติอุบัติการณ์</option>
+                            <option [value]="'1'">อนุมัติอุบัติการณ์</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <!-- <div class="form-group" *ngIf="chief_user === 'A'">
+                    <label for="conf_output">conf_output</label>
+                    <div class="select">
+                        <select [(ngModel)]="conf_output" name="conf_output" id="conf_output" disabled>
+                            <option [value]="'0'">รอการวิเคราะห์และแก้ไข</option>
+                            <option [value]="'1'">ส่งปิดอุบัติการณ์</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <!-- <div class="form-group" *ngIf="maniger_user === 'A'">
+                    <label for="conf_nrls">conf_nrls</label>
+                    <div class="select">
+                        <select [(ngModel)]="conf_nrls" name="conf_nrls" id="conf_nrls" disabled>
+                            <option [value]="'0'">ไม่ส่งรายงาน</option>
+                            <option [value]="'1'">ส่งรายงาน</option>
+                        </select>
+                    </div>
+                </div> -->
+            </section>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="open = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>
+
+
+<!-- อนุมัติอุบัติการส่งความเสี่ยง -->
+<clr-modal [(clrModalOpen)]="edit" [clrModalSize]="'lg'" [clrModalClosable]="false">
+    <h3 class="modal-title">อุบัติการณ์ความเสี่ยง</h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block">
+                <label>
+                    <span> ข้อมูลอุบัติการณ์</span>
+                </label>
+                <div class="form-group">
+                    <label for="hn_incident">รหัสผู้มารับบริการ</label>
+                    <input type="text" [(ngModel)]="hn_incident" name="hn_incident" id="hn_incident" size="10" disabled>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="idcard_incident">ผู้รายงานอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="idcard_incident" name="idcard_incident" id="idcard_incident" disabled>
+                            <option *ngFor="let p of allpersons" [value]="p.idcard">{{p.title}}{{p.first_name}}  {{p.last_name}}</option>
+                        </select>
+                    </div>
+                </div> -->
+                <div class="form-group">
+                    <label for="dep_rep_id" class="required">หน่วยงานผู้รายงาน</label>
+                    <div class="select">
+                        <select [(ngModel)]="dep_rep_id" name="dep_rep_id" id="dep_rep_id" disabled>
+                            <option *ngFor="let n of alldeparts" [value]="n.id_depart">{{n.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="dep_res_id" class="required">ส่งถึงหน่วยงาน</label>
+                    <div class="select">
+                        <select [(ngModel)]="dep_res_id" name="dep_res_id" id="dep_res_id" disabled>
+                            <option *ngFor="let n of alldeparts" [value]="n.id_depart">{{n.name_depart}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_side" class="required">กลุ่มอุบัติการ</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_side" name="id_side" id="id_side" (click)="showAllSafety(id_side)"
+                            (click)="showAllLevel(id_side)"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let s of allSide" [value]="s.id_side">{{s.code_side}}:{{s.name_side}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_safety" class="required">หมวดอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_safety" name="id_safety" id="id_safety" (click)="showAllType(id_safety)"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let s of allSafety" [value]="s.id_safety">
+                                {{s.code_safety}}:{{s.name_safety}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_type" class="required">ประเภทอุบัติการ</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_type" name="id_type" id="id_type" (click)="showAllNotype(id_type)"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let t of allType" [value]="t.id_type">{{t.code_type}}:{{t.name_type}} |
+                                {{t.name_TH}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_notype" class="required">ประเภทย่อยอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="id_notype" name="id_notype" id="id_notype"
+                            (click)="showAllAccount(id_side, id_safety, id_type, id_notype)" disabled>
+                            <option *ngFor="let n of allNotype" [value]="n.id_notype">
+                                {{n.code_notype}}:{{n.name_notype}}
+                                | {{n.name_TH}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_account" class="required">บัญชีอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="code_account" name="code_account" id="code_account" disabled>
+                            <option *ngFor="let n of allAccount" [value]="n.code_account">
+                                {{n.code_account}}:{{n.name_account}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="code_level" class="required">ระดับความรุ่นแรง</label>
+                    <div class="select">
+                        <select [(ngModel)]="code_level" name="code_level" id="code_level" disabled>
+                            <option *ngFor="let n of alllevel" [value]="n.code_level">{{n.code_level}}:{{n.name_level}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="affected_id">บุคคลได้รับผลกระทบ</label>
+                    <div class="select">
+                        <select [(ngModel)]="affected_id" name="affected_id" id="affected_id" disabled>
+                            <option *ngFor="let s of allaffected" [value]="s.affected_id">{{s.affected_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sex_incident">เพศ บุคคลได้รับผลกระทบ</label>
+                    <div class="select">
+                        <select [(ngModel)]="sex_incident" name="sex_incident" id="sex_incident" disabled>
+                            <option *ngFor="let s of allsex" [value]="s.sex_id">{{s.sex_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="age_incident">อายุ บุคคลได้รับผลกระทบ</label>
+                    <input type="text" [(ngModel)]="age_incident" name="age_incident" id="age_incident" size="10"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="location_incident" class="required">สถานที่เกิดอุบัตการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="location_incident" name="location_incident" id="location_incident"
+                            disabled>
+                            <option *ngFor="let l of alllocation" [value]="l.location_id">{{l.location_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="date_incident" class="required">วันเดือนปีที่เกิดอุบัติการณ์</label>
+                    <input type="date" [(ngModel)]="date_incident" name="date_incident" id="date_incident" size="20"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="date_account" class="required">วันเดือนปีที่รายงาน</label>
+                    <input type="date" [(ngModel)]="date_account" name="date_account" id="date_account" size="20"
+                        disabled>
+                </div>
+                <div class="form-group">
+                    <label for="time_incident" class="required">เวลาที่เกิดอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="time_incident" name="time_incident" id="time_incident" disabled>
+                            <option *ngFor="let t of alltime" [value]="t.time_id">{{t.time_name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="agents_involved" class="required">สรุปประเด็นปัญหา
+                        <clr-signpost>
+                            <clr-signpost-content [clrPosition]="agents_involved" *clrIfOpen>
+                                <h3 style="margin-top: 0">สรุปประเด็นปัญหา</h3>
+                                <h4>
+                                    <code class="clr-code">ตาม Format : เกิดอะไร เพราะเหตุใด อย่างไร</code>
+                                </h4>
+                            </clr-signpost-content>
+                        </clr-signpost>
+                    </label>
+                    <textarea [(ngModel)]="agents_involved" name="agents_involved" id="agents_involved" rows="5"
+                        disabled></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="other_involved">วิธีการแก้ไขเบื้องต้น</label>
+                    <textarea [(ngModel)]="other_involved" name="other_involved" id="other_involved" rows="5"
+                        disabled></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="noteceo">วิเคราะห์แก้ไขอุบัติการณ์</label>
+                    <textarea [(ngModel)]="noteceo" name="noteceo" id="noteceo" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="date_res">วันที่วิเคราะห์แก้ไข</label>
+                    <input type="date" [(ngModel)]="date_res" name="date_res" id="date_res" size="20" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="resulting_actions">มีการปรับปรุ่ง/พัฒนา (ถ้ามี)</label>
+                    <textarea [(ngModel)]="resulting_actions" name="resulting_actions" id="resulting_actions"
+                        rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="date_rep">วันที่ ปิดอุบติการณ์</label>
+                    <input type="date" [(ngModel)]="date_rep" name="date_rep" id="date_rep" size="20">
+                </div>
+                <!-- <div class="form-group" *ngIf="chief_user === 'A'">
+                    <label for="conf_chief">conf_chief</label>
+                    <div class="select">
+                        <select [(ngModel)]="conf_chief" name="conf_chief" id="conf_chief">
+                            <option [value]="'0'">รอการอนุมัติอุบัติการณ์</option>
+                            <option [value]="'1'">อนุมัติอุบัติการณ์</option>
+                        </select>
+                    </div>
+                </div> -->
+                <div class="form-group" *ngIf="chief_user === 'A'">
+                    <label for="conf_output">ส่งปิดอุบัติการณ์</label>
+                    <div class="select">
+                        <select [(ngModel)]="conf_output" name="conf_output" id="conf_output">
+                            <option [value]="'0'">รอการวิเคราะห์และแก้ไข</option>
+                            <option [value]="'1'">ส่งปิดอุบัติการณ์</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- <div class="form-group" *ngIf="maniger_user === 'A'">
+                    <label for="conf_nrls">conf_nrls</label>
+                    <div class="select">
+                        <select [(ngModel)]="conf_nrls" name="conf_nrls" id="conf_nrls">
+                            <option [value]="'0'">ไม่ส่งรายงาน</option>
+                            <option [value]="'1'">ส่งรายงาน</option>
+                        </select>
+                    </div>
+                </div> -->
+            </section>
+        </form>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline" (click)="edit = false">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+    </div>
+</clr-modal>

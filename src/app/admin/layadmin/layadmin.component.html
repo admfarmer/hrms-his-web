@@ -1,0 +1,72 @@
+<clr-main-container>
+    <clr-header class="header header-6">
+        <div class="branding">
+            <a href="#" [routerLink]="['/admin/home']" class="nav-link">
+                <span class="title">TSMADMIN | ระบบบริหารจัดการความเสี่ยงโรงพยาบาล</span>
+            </a>
+        </div>
+        <div class="header-actions">
+            <div class="branding">
+                <span class="title">{{username}}({{title}}{{first_name}} {{last_name}}) |
+                    <a class="nav-link" href="#" (click)="Logout()">LogOut</a>
+                </span>
+            </div>
+        </div>
+
+    </clr-header>
+    <nav class="subnav" [clr-nav-level]="1">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/home']" routerLinkActive="active">
+                    <clr-icon shape="user"></clr-icon> ชื่อผู้ใช้เข้าระบบ
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/person']" routerLinkActive="active">
+                    <clr-icon shape="users"></clr-icon> บุคลากร
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/depart']" routerLinkActive="active">
+                    <clr-icon shape="users"></clr-icon> ฝ่าย/หน่วยงาน
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/level']" routerLinkActive="active">
+                    <clr-icon shape="layers"></clr-icon> ระดับความรุนแรง
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/side']" routerLinkActive="active">
+                    <clr-icon shape="export"></clr-icon> กลุ่มอุบัติการณ์
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/safety']" routerLinkActive="active">
+                    <clr-icon shape="block"></clr-icon> หมวดอุบัติการณ์
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/type']" routerLinkActive="active">
+                    <clr-icon shape="event"></clr-icon> ประเภทอุบัติการณ์
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/notype']" routerLinkActive="active">
+                    <clr-icon shape="blocks-group"></clr-icon> ประเภทย่อยของอุบัติการณ์
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" [routerLink]="['/admin/incident']" routerLinkActive="active">
+                    <clr-icon shape="scroll"></clr-icon> อุบัติการณ์ความเสี่ยง
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content-container">
+        <div class="content-area">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</clr-main-container>

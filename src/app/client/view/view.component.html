@@ -1,0 +1,77 @@
+<section class="form-block" *ngIf="params !== null">
+    <h3 class="modal-title">From params </h3>
+    <div class="modal-body">
+        <form>
+            <section class="form-block" *ngFor="let xx of param_xx; let idx = index;">
+                <div class="form-group">
+                    <label for="aForm_2">{{ xx }}</label>
+                    <div *ngIf="xx == 'datestart' || xx == 'dateend'">
+                        <input type="date" name="xx" id="xx" size="35" value="" #input (input)="KeyParam(xx,input,idx)"
+                            clrDate>
+                    </div>
+                    <div class="select" *ngIf="xx == 'month'">
+                        <select name="xx" id="xx" #input (input)="KeyParam(xx,input,idx)">
+                            <option [value]="''">---- เลือกเดือน ----</option>
+                            <option [value]="'01'">มกราคม</option>
+                            <option [value]="'02'">กุมภาพันธ์</option>
+                            <option [value]="'03'">มีนาคม</option>
+                            <option [value]="'04'">เมษายน</option>
+                            <option [value]="'05'">พฤษภาคม</option>
+                            <option [value]="'06'">มิถุนายน</option>
+                            <option [value]="'07'">กรกฏาคม</option>
+                            <option [value]="'08'">สิงหาคม</option>
+                            <option [value]="'09'">กันยายน</option>
+                            <option [value]="'10'">ตุลาคม</option>
+                            <option [value]="'11'">พฤศจิกายน</option>
+                            <option [value]="'12'">ธันวาคม</option>
+                        </select>
+                    </div>
+                    <div class="select" *ngIf="xx == 'yearbudget'">
+                        <select name="xx" id="xx" #input (input)="KeyParam(xx,input,idx)">
+                            <option [value]="''">---- เลือกปี พ.ศ. ----</option>
+                            <option [value]="'2020'">2563</option>
+                            <option [value]="'2019'">2562</option>
+                            <option [value]="'2018'">2561</option>
+                            <option [value]="'2017'">2560</option>
+                            <option [value]="'2016'">2559</option>
+                            <option [value]="'2015'">2558</option>
+                            <option [value]="'2014'">2557</option>
+                            <option [value]="'2013'">2556</option>
+                            <option [value]="'2012'">2555</option>
+                            <option [value]="'2011'">2554</option>
+                        </select>
+                    </div>
+                    <div class="select" *ngIf="xx == 'depart'">
+                        <select name="xx" id="xx" #input (input)="KeyParam(xx,input,idx)">
+                            <option *ngFor="let dep of alldeparts;" [value]="dep.id_depart">{{dep.id_depart}}:{{dep.name_depart}}</option>
+                        </select>
+                    </div>
+                    <div *ngIf="xx !== 'datestart' && xx !== 'dateend' && xx !== 'depart' && xx !== 'month' && xx !== 'yearbudget'">
+                        <input type="text" name="xx" id="xx" size="35" value="" #input (keyup)="KeyParam(xx,input,idx)">
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" (click)="showParams()">Ok</button>
+    </div>
+</section>
+
+<h2>รายงานอุบัติการณ์ : {{tableName}} </h2>
+<section class="form-block" *ngIf="fieldDatas !=''">
+    <button (click)="exportToExcel()" class="btn btn-primary">Export to excel</button>
+</section>
+<clr-datagrid>
+    <clr-dg-column [clrDgField]="'f'" *ngFor="let f of fieldDatas"> {{f}}</clr-dg-column>
+    <clr-dg-placeholder>ไม่พบรายการ</clr-dg-placeholder>
+    <clr-dg-row *clrDgItems="let d of tableDatas">
+        <clr-dg-cell *ngFor="let x of d; let idx=index;">
+            <label>{{ x }}</label>
+        </clr-dg-cell>
+    </clr-dg-row>
+    <clr-dg-footer>
+        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of {{pagination.totalItems}} rows
+        <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+    </clr-dg-footer>
+</clr-datagrid>
