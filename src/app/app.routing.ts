@@ -4,7 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { LayoutComponent } from './layout/layout.component';
 
 export const ROUTES: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' }, // กำหมด Path ให้วิง ไปที่ Hirep/Home
+    // { path: '', redirectTo: 'login', pathMatch: 'full' }, // กำหมด Path ให้วิง ไปที่ Hirep/Home
     {
         path: '', // กำหมด Path ในการทำงาน
         component: LayoutComponent, // ดึง layrep.component.html มาแสดง

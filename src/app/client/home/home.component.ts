@@ -47,6 +47,10 @@ export class HomeComponent implements OnInit {
     open: boolean = false;
     edit: boolean = false;
     isUpdate: boolean = false;
+    isSex = false;
+    isAge = false;
+    ages: any = {};
+
     allincident: any[] = [''];
     alldeparts: any[] = [''];
     allAccount: any = [''];
@@ -146,12 +150,36 @@ export class HomeComponent implements OnInit {
         private encryptProvider: Encrypt,
         private alertService: AlertService
 
-    ) { }
+    ) {
+        this.ages = [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+            31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+            43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76,
+            77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92,
+            93, 94, 95, 96, 97, 98, 99, 100
+        ];
+
+    }
 
     ngOnInit() {
         this.showAllIncident();
         this.showData();
     }
+
+    Affected(affected_id) {
+        this.affected_id = affected_id;
+        console.log(this.affected_id);
+        if (this.affected_id == '1') {
+            this.isSex = true;
+            this.isAge = true;
+        } else {
+            this.isSex = false;
+            this.isAge = false;
+            this.sex_incident = null;
+            this.age_incident = null;
+        }
+    }
+
     showData() {
         this.showAllPerson();
         this.showDepart();
@@ -907,7 +935,7 @@ export class HomeComponent implements OnInit {
         this.showAllType(this.id_safety);
         this.showAllNotype(this.id_type);
         this.showAllAccount(this.id_side, this.id_safety, this.id_type, this.id_notype);
-
+        this.Affected(this.affected_id);
         this.isUpdate = true;
         this.open = true;
     }
@@ -967,6 +995,7 @@ export class HomeComponent implements OnInit {
         this.showAllType(this.id_safety);
         this.showAllNotype(this.id_type);
         this.showAllAccount(this.id_side, this.id_safety, this.id_type, this.id_notype);
+        this.Affected(this.affected_id);
 
         this.isUpdate = true;
         this.edit = true;

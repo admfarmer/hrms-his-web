@@ -40,7 +40,7 @@ import { DepartComponent } from './depart/depart.component';
         NotypeComponent,
         IncidentComponent,
         DepartComponent
-    ]   
+    ]
 
 })
 export class AdminModule { }

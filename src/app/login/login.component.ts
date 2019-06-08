@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
                     }
                 } else {
                     console.log("No Login");
-                    this.router.navigate(['/tsmrisk/login'], { skipLocationChange: true });
+                    this.router.navigate(['./login'], { skipLocationChange: true });
                 }
             }).catch(error => {
                 console.log(error);
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
                         let rows = JSON.parse(decryptedText);
                         this.status = rows.rows; // ตอนรับ ก็ต้องมารับค่า rows แบบนี้
                         if (this.status.length === 0) {
-                            this.router.navigate(['tsmrisk']); // ส่ง Routes ไป client/home
+                            this.router.navigate(['./login']); // ส่ง Routes ไป client/home
                         } else {
                             // console.log(this.status);
                             if (this.status[0].admin_status === "1" && this.adm_status === "1") {

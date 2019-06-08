@@ -174,12 +174,15 @@
                 <div class="form-group">
                     <label for="affected_id">บุคคลได้รับผลกระทบ</label>
                     <div class="select">
-                        <select [(ngModel)]="affected_id" name="affected_id" id="affected_id">
-                            <option *ngFor="let s of allaffected" [value]="s.affected_id">{{s.affected_name}}</option>
+                        <select [(ngModel)]="affected_id" name="affected_id" id="affected_id" #affectedId
+                            (click)="Affected(affected_id)">
+                            <option [value]=" ">ไม่มีผลกระทบ</option>
+                            <option *ngFor="let s of allaffected" [value]="s.affected_id">
+                                {{s.affected_id}}:{{s.affected_name}}</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="isSex">
                     <label for="sex_incident">เพศ บุคคลได้รับผลกระทบ</label>
                     <div class="select">
                         <select [(ngModel)]="sex_incident" name="sex_incident" id="sex_incident">
@@ -187,9 +190,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="isSex">
                     <label for="age_incident">อายุ บุคคลได้รับผลกระทบ</label>
-                    <input type="text" [(ngModel)]="age_incident" name="age_incident" id="age_incident" size="10">
+                    <div class="select">
+                        <select name="age_incident" [(ngModel)]="age_incident">
+                            <option [value]=" ">ไม่ระบุอายุ</option>
+                            <option *ngFor="let s of ages" [value]="s">{{s}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="location_incident" class="required">สถานที่เกิดอุบัตการณ์</label>
@@ -406,12 +414,15 @@
                 <div class="form-group">
                     <label for="affected_id">บุคคลได้รับผลกระทบ</label>
                     <div class="select">
-                        <select [(ngModel)]="affected_id" name="affected_id" id="affected_id">
-                            <option *ngFor="let s of allaffected" [value]="s.affected_id">{{s.affected_name}}</option>
+                        <select [(ngModel)]="affected_id" name="affected_id" id="affected_id" #affectedId
+                            (click)="Affected(affected_id)">
+                            <option [value]=" ">ไม่มีผลกระทบ</option>
+                            <option *ngFor="let s of allaffected" [value]="s.affected_id">
+                                {{s.affected_id}}:{{s.affected_name}}</option>
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="isSex">
                     <label for="sex_incident">เพศ บุคคลได้รับผลกระทบ</label>
                     <div class="select">
                         <select [(ngModel)]="sex_incident" name="sex_incident" id="sex_incident">
@@ -419,9 +430,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" *ngIf="isSex">
                     <label for="age_incident">อายุ บุคคลได้รับผลกระทบ</label>
-                    <input type="text" [(ngModel)]="age_incident" name="age_incident" id="age_incident" size="10">
+                    <div class="select">
+                        <select name="age_incident" [(ngModel)]="age_incident">
+                            <option [value]=" ">ไม่ระบุอายุ</option>
+                            <option *ngFor="let s of ages" [value]="s">{{s}}</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="location_incident" class="required">สถานที่เกิดอุบัตการณ์</label>
