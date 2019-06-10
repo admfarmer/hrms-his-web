@@ -405,6 +405,7 @@ export class SetupComponent implements OnInit {
 
     updatePassword() {
         this.editpass = false;
+
         if (this.idcard && this.username && this.passwordone === this.passwordtwo) {
             this.usernameService.updatePasword(
                 this.id_user,
@@ -448,7 +449,7 @@ export class SetupComponent implements OnInit {
 
     Logout() {
         localStorage.removeItem('token');
-        this.router.navigate(['/tsmrisk/login']); // ส่ง Routes ไป client/home
+        this.router.navigate(['./login']); // ส่ง Routes ไป client/home
 
     }
 
@@ -475,10 +476,10 @@ export class SetupComponent implements OnInit {
                         // console.log(token);
                         let decryptedText = this.encryptProvider.decrypt(token);
                         let rows = JSON.parse(decryptedText);
-                        // console.log(rows);
+                        // console.log(rows.rows[0].password);
 
-                        this.Username = rows.results; // ตอนรับ ก็ต้องมารับค่า rows แบบนี้
-                        // console.log(this.Username[0].password);
+                        this.Username = rows.rows; // ตอนรับ ก็ต้องมารับค่า rows แบบนี้
+                        // console.log(this.Username[0].password, ':', this.varpassword);
 
                         // this.Username[0].
                         if (this.varpassword === this.Username[0].password) {
