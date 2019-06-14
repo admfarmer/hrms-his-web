@@ -7,6 +7,7 @@
 <h2>ข้อมูลอุบัติการณ์ความเสี่ยงโรงพยาบาล</h2>
 อุบัติการณ์ความเสี่ยงทั้งหมด จากหน่วยงานรายงานอุบัติการณ์ความเสี่ยงทั้งหมด
 <clr-datagrid class="col-xs-12 col-md-12 col-xl-12">
+    <clr-dg-column [clrDgField]="'id_incident'">เลขที่</clr-dg-column>
     <clr-dg-column [clrDgField]="'code_account'">อุบัติการณ์</clr-dg-column>
     <clr-dg-column [clrDgField]="'location_incident'">สถานที่เกิด</clr-dg-column>
     <clr-dg-column [clrDgField]="'date_account'">วันที่พบอุบัติการณ์</clr-dg-column>
@@ -22,6 +23,7 @@
                 <!-- <button class="btn btn-success" (click)="delete(x)">ลบข้อมูล</button> -->
             </div>
         </clr-dg-action-overflow>
+        <clr-dg-cell>{{x.id_incident}}</clr-dg-cell>
         <clr-dg-cell>{{x.code_account}}
             <clr-signpost (click)="showSelectacc(x.code_account)">
                 <clr-signpost-content [clrPosition]="code_account" *clrIfOpen>

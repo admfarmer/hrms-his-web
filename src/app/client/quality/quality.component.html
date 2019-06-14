@@ -9,6 +9,7 @@
 รายงานอุบัติการณ์ทั้งหมด
 
 <clr-datagrid class="col-xs-12 col-md-12 col-xl-12">
+    <clr-dg-column [clrDgField]="'id_incident'">เลขที่</clr-dg-column>
     <clr-dg-column [clrDgField]="'code_account'">อุบัติการณ์</clr-dg-column>
     <clr-dg-column [clrDgField]="'location_incident'">สถานที่เกิด</clr-dg-column>
     <clr-dg-column [clrDgField]="'dep_res_id'">ส่งถึงหน่วยงาน</clr-dg-column>
@@ -27,6 +28,7 @@
                     ส่งปิดอุบัติการณ์</button>
             </div>
         </clr-dg-action-overflow>
+        <clr-dg-cell>{{x.id_incident}}</clr-dg-cell>
         <clr-dg-cell>{{x.code_account}}
             <clr-signpost (click)="showSelectacc(x.code_account)">
                 <clr-signpost-content [clrPosition]="code_account" *clrIfOpen>
