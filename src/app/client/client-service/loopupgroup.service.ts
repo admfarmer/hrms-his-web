@@ -29,6 +29,19 @@ export class LoopupGroupService {
         })
     }
 
+    async getLocationId(locationId: any) {
+        return new Promise((resolve, reject) => {
+            // route ดูที่ API
+            this.http.get(`${this.url}/location/select/${locationId}`)
+                .map(res => res.json())
+                .subscribe(data => {
+                    resolve(data);
+                }, error => {
+                    reject(error);
+                })
+        })
+    }
+
     getSex() {
         return new Promise((resolve, reject) => {
             // route ดูที่ API

@@ -47,6 +47,7 @@ export class IncidentComponent implements OnInit {
     isSex = false;
     isAge = false;
     ages: any = {};
+    locationName: any[] = [];
 
     allincident: any[] = [];
     alldeparts: any[] = [];
@@ -834,19 +835,20 @@ export class IncidentComponent implements OnInit {
                     if (results.ok) {
                         console.log("เพิ่มข้อมูลสำเร็จ");
                         let request = results.rows;
-
-                        console.log(request);
-
+                        // console.log(request);
                         if (request) {
-                            let message1 = this.location_incident;
+                            // console.log(request);
+                            this.getLocationId(this.location_incident);
+                            // console.log(sessionStorage.getItem('locationName'));
+
+                            // console.log(_locationName);
+                            let message1 = sessionStorage.getItem('locationName');
                             let message2 = this.agents_involved;
                             let message3 = this.code_level;
                             // tslint:disable-next-line:max-line-length
                             let message = 'สถานที่เกิด : ' + message1 + ' สรุปความเสียง : ' + message2 + ' ความรุ่นแรงระดับ :  ' + message3;
                             console.log(message);
                             this.botLine(message);
-
-                        } else {
 
                         }
 
@@ -893,6 +895,23 @@ export class IncidentComponent implements OnInit {
         }
     }
 
+    getLocationId(locationId: any) {
+        this.loopupGroupService.getLocationId(locationId)
+            .then((result: any) => {
+                if (result.ok) {
+                    // console.log(result.rows);
+                    let _locationName = result.rows[0].location_name;
+                    // console.log(result.rows);
+                    sessionStorage.setItem('locationName', _locationName);
+                    // console.log(sessionStorage.getItem('locationName'));
+                } else {
+                    console.log(JSON.stringify(result.error));
+                }
+            })
+            .catch(() => {
+                console.log("Server Error");
+            })
+    }
     editData(x) {
         console.log(x);
         // this.showSafety();
