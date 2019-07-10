@@ -832,25 +832,27 @@ export class IncidentComponent implements OnInit {
                 this.near_miss_status
             )
                 .then((results: any) => {
+                    // console.log(results);
+
                     if (results.ok) {
                         console.log("เพิ่มข้อมูลสำเร็จ");
                         let request = results.rows;
                         // console.log(request);
-                        if (request) {
-                            // console.log(request);
-                            this.getLocationId(this.location_incident);
-                            // console.log(sessionStorage.getItem('locationName'));
+                        // if (request) {
+                        //     // console.log(request);
+                        //     this.getLocationId(this.location_incident);
+                        //     // console.log(sessionStorage.getItem('locationName'));
 
-                            // console.log(_locationName);
-                            let message1 = sessionStorage.getItem('locationName');
-                            let message2 = this.agents_involved;
-                            let message3 = this.code_level;
-                            // tslint:disable-next-line:max-line-length
-                            let message = 'สถานที่เกิด : ' + message1 + ' สรุปความเสียง : ' + message2 + ' ความรุ่นแรงระดับ :  ' + message3;
-                            console.log(message);
-                            this.botLine(message);
+                        //     // console.log(_locationName);
+                        //     let message1 = sessionStorage.getItem('locationName');
+                        //     let message2 = this.agents_involved;
+                        //     let message3 = this.code_level;
+                        //     // tslint:disable-next-line:max-line-length
+                        //     let message = 'สถานที่เกิด : ' + message1 + ' สรุปความเสียง : ' + message2 + ' ความรุ่นแรงระดับ :  ' + message3;
+                        //     console.log(message);
+                        //     // this.botLine(message);
 
-                        }
+                        // }
 
                         this.showAllIncident();
                         this.id_incident = null;
@@ -1072,6 +1074,7 @@ export class IncidentComponent implements OnInit {
     updateData() {
         this.open = false;
         this.edit = false;
+
         if (this.id_incident
             && this.idcard_incident
             && this.dep_rep_id
