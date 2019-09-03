@@ -349,10 +349,7 @@ export class IncidentService {
         return new Promise((resolve, reject) => {
             // แนบตัวแปบไปกับ service
             // tslint:disable-next-line:max-line-length -- token กลุ่ม Line โรงพยาบาล
-            this.http.post(`${this.url}/incident/botline`, { token: 'TPQG4mGOTMb2xbZJVqBBlzVmEBrkWgHhRF1d2E3Ono8', message: message })
-                // tslint:disable-next-line:max-line-length
-                // this.http.post(`${this.url}/incident/botline`, { token: 'B10ZaXJb5EIu07jBSPGYbUvVL7hyASPFQpyOba1Apmo', message: message })
-                // this.http.post(`${this.url}/incident/botline`, { token: 'MbIXGoEiskyA3niKQwFhLeNMvSvgMZAw4Q4MgnSVwlb', message: message })
+            this.http.post(`${this.url}/incident/botline`, { token: '', message: message })
                 .map(res => res.json())
                 .subscribe(data => {
                     resolve(data);
