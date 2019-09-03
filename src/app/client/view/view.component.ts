@@ -9,13 +9,9 @@ import { DepartService } from '../../admin/admin-service/depart.service'
 import * as CryptoJS from 'crypto-js';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Angular5Csv } from 'angular5-csv/Angular5-csv';
 import { ExcelService } from '../../common-service/excel.service';
+import { AngularCsv } from 'angular-csv-ext/dist/Angular-csv';
 
-import * as jsPDF from 'jspdf';
-import * as jsPDFauto from 'jspdf-autotable';
-import * as html2canvas from 'html2canvas';
-// declare let jsPDF: any;
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
@@ -93,29 +89,9 @@ export class ViewComponent implements OnInit {
             useBom: true,
             headers: [this.fieldDatas]
         };
-        new Angular5Csv(this.Dataviews, this.tableName, options);
+        new AngularCsv(this.Dataviews, this.tableName, options);
 
     }
-
-    exportToPdf() {
-        var columns = this.fieldDatas;
-        var rows = this.tableDatas;
-
-        // console.log(this.tableName);
-        //-----------
-        var doc = new jsPDF();
-        doc.text(20, 20, 'test');
-        doc.table(20, 30, rows, columns, 14)
-        doc.addPage();
-        html2canvas(document.getElementById('graph')).then(function (canvas) {
-            var img = canvas.toDataURL("image/png");
-            doc.addImage(img, 'JPEG', 100, 100);
-            doc.save('test.pdf');
-        });
-        doc.save('Test.pdf');
-
-    }
-
     showDepart() {
         this.alldeparts = [];
         this.departService.getDepart()
