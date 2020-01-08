@@ -797,7 +797,7 @@ export class IncidentComponent implements OnInit {
             && this.agents_involved
             && this.location_incident
             && this.date_incident
-            && this.date_account
+            // && this.date_account
             && this.time_incident
             && this.code_level
         ) {

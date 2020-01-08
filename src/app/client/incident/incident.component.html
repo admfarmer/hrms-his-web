@@ -178,7 +178,7 @@
                     <div class="select">
                         <select [(ngModel)]="affected_id" name="affected_id" id="affected_id" #affectedId
                             (click)="Affected(affected_id)">
-                            <option [value]=" ">ไม่มีผลกระทบ</option>
+                            <option [value]="0">ไม่มีผลกระทบ</option>
                             <option *ngFor="let s of allaffected" [value]="s.affected_id">
                                 {{s.affected_id}}:{{s.affected_name}}</option>
                         </select>
@@ -418,7 +418,7 @@
                     <div class="select">
                         <select [(ngModel)]="affected_id" name="affected_id" id="affected_id" #affectedId
                             (click)="Affected(affected_id)">
-                            <option [value]=" ">ไม่มีผลกระทบ</option>
+                            <option [value]="0">ไม่มีผลกระทบ</option>
                             <option *ngFor="let s of allaffected" [value]="s.affected_id">
                                 {{s.affected_id}}:{{s.affected_name}}</option>
                         </select>
