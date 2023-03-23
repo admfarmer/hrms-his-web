@@ -18,6 +18,9 @@ import { environment } from "environments/environment.prod";
 import { AuthModule } from './auth/auth.module';
 import { ExcelService } from './common-service/excel.service';
 
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -37,6 +40,7 @@ import { ExcelService } from './common-service/excel.service';
         AuthModule,
     ],
     providers: [
+        {provide: LocationStrategy, useClass: HashLocationStrategy},
         { provide: 'API_URL', useValue: environment.apiUrl },
         ExcelService
     ],
