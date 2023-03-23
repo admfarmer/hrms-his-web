@@ -10,7 +10,7 @@ import { ViewComponent } from './view/view.component';
 import { QualityComponent } from './quality/quality.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'client/home', pathMatch: 'full' }, //กำหมด Path ให้วิง ไปที่ client/Home
+    // { path: '', redirectTo: 'client/home', pathMatch: 'full' }, //กำหมด Path ให้วิง ไปที่ client/Home
     {
         path: 'client',   // กำหมด Path ในการทำงาน
         component: LayclientComponent, // ดึง layrep.component.html มาแสดง

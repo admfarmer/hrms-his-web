@@ -12,7 +12,7 @@ import { IncidentComponent } from './incident/incident.component';
 import { DepartComponent } from './depart/depart.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'admin/home', pathMatch: 'full' }, //กำหมด Path ให้วิง ไปที่ client/Home
+    // { path: '', redirectTo: 'admin/home', pathMatch: 'full' }, //กำหมด Path ให้วิง ไปที่ client/Home
     {
         path: 'admin',   // กำหมด Path ในการทำงาน
         component: LayadminComponent, // ดึง layrep.component.html มาแสดง
