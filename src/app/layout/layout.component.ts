@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from "@angular/router";
+
 @Component({
     selector: 'app-layout',
     templateUrl: './layout.component.html',
@@ -7,9 +9,14 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 })
 export class LayoutComponent implements OnInit {
 
-    constructor() { }
+    constructor(
+        private router: Router,
+        ) { }
 
     ngOnInit() {
+       if(sessionStorage.getItem('token')){
+        this.router.navigate(['/client'], { skipLocationChange: true });
+       } 
     }
 
 }
