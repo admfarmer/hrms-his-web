@@ -39,7 +39,7 @@ export class LayadminComponent implements OnInit {
     Logout() {
 
         sessionStorage.removeItem('token');
-        this.router.navigate(['./login']); // ส่ง Routes ไป client/home
+        this.router.navigate(['/login']); // ส่ง Routes ไป client/home
     }
     Login() {
         if (sessionStorage.getItem('token') != null) {

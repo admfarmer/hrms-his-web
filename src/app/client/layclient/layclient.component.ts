@@ -48,8 +48,8 @@ export class LayclientComponent implements OnInit {
     }
     Logout() {
         sessionStorage.removeItem('token');
-        // this.router.navigate(['/tsmrisk/home']); // ส่ง Routes ไป client/home
-        location.pathname = './login';
+        this.router.navigate(['/login']); // ส่ง Routes ไป client/home
+        // location.pathname = '/login';
 
     }
     Login() {
