@@ -62,7 +62,11 @@ export class LayadminComponent implements OnInit {
                         this.title = this.persons[0].title;
                         this.first_name = this.persons[0].first_name;
                         this.last_name = this.persons[0].last_name;
-                        this.router.navigate(['/admin']); // ส่ง Routes ไป client/home
+                        if(this.maniger_user == 'A'){
+                            this.router.navigate(['/admin']); // ส่ง Routes ไป client/home
+                        }else{
+                            this.router.navigate(['/client']);
+                        }
 
                         // console.log(this.title);
                         // console.log(this.first_name);
