@@ -9,6 +9,8 @@ export const ROUTES: Routes = [
         path: '', // กำหมด Path ในการทำงาน
         component: LayoutComponent, // ดึง layrep.component.html มาแสดง
         children: [
+            { path: '', redirectTo: 'login', pathMatch: 'full' },
+
             { path: 'login', component: LoginComponent }
 
         ]
